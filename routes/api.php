@@ -58,6 +58,11 @@ Route::get('/users/{id}',function($id){
   ];
   return json_encode($json[$id-1]);
 })->middleware('cors');
+//sign up
+// Route::get('getCSRF',function(){
+//   return json_encode();
+// });
+Route::post('user/create',['uses' => 'Auth\RegisterController@signUp']);
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
