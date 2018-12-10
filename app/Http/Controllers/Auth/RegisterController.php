@@ -76,7 +76,7 @@ class RegisterController extends Controller
       $rules=[
         'fname' => 'required',
         'lname' => 'required',
-        'email' => 'required|email',
+        'email' => 'required|email|unique:users,email',
         'passwordGroup.password' => 'required|min:8',
         'passwordGroup.repassword' => 'same:passwordGroup.password',
         'gender' => 'in:male,female'
