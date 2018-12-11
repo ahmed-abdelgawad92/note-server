@@ -12,29 +12,9 @@ use Illuminate\Http\Request;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-Route::get('/users',function(){
-  $json = [
-    [
-      'id' => '1',
-      'name' => 'ahmed',
-      'age' => '26',
-      'gender' => 'male'
-    ],
-    [
-      'id' => '2',
-      'name' => 'thuan',
-      'age' => '30',
-      'gender' => 'female'
-    ],
-    [
-      'id' => '3',
-      'name' => 'eva',
-      'age' => '26',
-      'gender' => 'female'
-    ]
-  ];
-  return json_encode($json);
-});
+Route::get('/users',[
+  'uses' => 'UserController@index'
+]);
 Route::get('/users/{id}',function($id){
   $json = [
     [
@@ -63,8 +43,12 @@ Route::get('/users/{id}',function($id){
 //   return json_encode();
 // });
 Route::post('user/create',[
-  'uses' => 'Auth\RegisterController@signUp'
+  'uses' => 'UserController@signUp'
 ]);
+Route::post('user/login',[
+  'uses' => 'UserController@signIn'
+]);
+
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
