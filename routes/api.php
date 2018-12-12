@@ -12,7 +12,7 @@ use Illuminate\Http\Request;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-Route::get('/users',[
+Route::middleware('jwt.auth')->get('/users',[
   'uses' => 'UserController@index'
 ]);
 Route::get('/users/{id}',function($id){
