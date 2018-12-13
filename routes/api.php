@@ -15,6 +15,9 @@ use Illuminate\Http\Request;
 Route::middleware('jwt.auth')->get('/users',[
   'uses' => 'UserController@index'
 ]);
+Route::get('/users/token',[
+  'uses' => 'UserController@token'
+]);
 Route::get('/users/{id}',function($id){
   $json = [
     [

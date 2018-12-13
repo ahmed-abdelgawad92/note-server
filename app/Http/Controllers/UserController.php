@@ -103,10 +103,68 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
-    {
-        //
-    }
+     public function token(){
+         // $token = JWTAuth::getToken();
+         // if(!$token){
+         //     throw new BadRequestHtttpException('Token not provided');
+         // }
+         // try{
+         //     $token = JWTAuth::refresh($token);
+         // }catch(TokenInvalidException $e){
+         //     throw new AccessDeniedHttpException('The token is invalid');
+         // }
+         // return response()->json(['token'=>$token]);
+        $token = JWTAuth::getToken();
+
+        try
+        {
+            $newToken = JWTAuth::refresh($token);
+        }
+        catch (TokenExpiredException $e)
+        {
+            return response()->json([
+                'success' => false,
+                'data' => [
+                    'errors' => [
+                        'auth_token' => [
+                            'token_expired'
+                        ]
+                    ]
+                ],
+            ], $e->getStatusCode());
+        }
+        catch (TokenInvalidException $e)
+        {
+            return response()->json([
+                'success' => false,
+                'data' => [
+                    'errors' => [
+                        'auth_token' => [
+                            'token_invalid'
+                        ]
+                    ]
+                ],
+            ], $e->getStatusCode());
+        }
+        catch (JWTException $e)
+        {
+            return response()->json([
+                'success' => false,
+                'data' => [
+                    'errors' => [
+                        'auth_token' => [
+                            'token_absent'
+                        ]
+                    ]
+                ],
+            ], $e->getStatusCode());
+        }
+
+        return response()->json([
+            'success' => true,
+            'token' => $newToken
+        ], 200);
+     }
 
     /**
      * Show the form for editing the specified resource.
